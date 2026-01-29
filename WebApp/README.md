@@ -84,7 +84,7 @@ Windows OS (recommended for OCR)
 
 Clone or download the repository
 
-git clone https://github.com/AOtu12/SmartDocOCR.git
+git clone https://github.com/AOtu12/SmartDocOCR_Proj01.git
 
 
 Open the solution in Visual Studio
@@ -103,9 +103,6 @@ Update-Database
 
 Run the project
 
-Navigate to:
-
-https://localhost:xxxx
 
 🔐 Authentication Flow
 
