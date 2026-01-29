@@ -1,0 +1,19 @@
+## Build folders
+bin/
+obj/
+
+## User-specific files
+.vs/
+*.user
+*.suo
+
+## Logs
+*.log
+
+## Local DB / temp
+app.db
+*.mdf
+*.ldf
+
+## Uploads (optional: if you don’t want uploaded files in repo)
+wwwroot/uploads/

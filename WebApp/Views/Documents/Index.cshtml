@@ -1,0 +1,123 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model IEnumerable<WebApp.Models.Document>
+
+@{
+    ViewData["Title"] = "My Documents";
+    var cats = ViewBag.Categories as List<WebApp.Models.Category>;
+}
+
+<h2 class="mb-4 text-dark fw-bold">
+    📁 My Documents
+</h2>
+
+<!-- ✅ Success / Info Message -->
+@if (TempData["msg"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+        <i class="bi bi-check-circle"></i> @TempData["msg"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<!-- 🔍 Filter / Search Form -->
+<form method="get" class="row g-2 mb-4 shadow-sm p-3 bg-light rounded">
+    <div class="col-md-3">
+        <input type="text" name="kw" value="@ViewBag.Kw" class="form-control" placeholder="🔎 Search by keyword..." />
+    </div>
+    <div class="col-md-3">
+        <select name="categoryId" class="form-select">
+            <option value="">-- All Categories --</option>
+            @if (cats != null)
+            {
+                foreach (var c in cats)
+                {
+                    <option value="@c.Id" selected="@(ViewBag.CategoryId == c.Id)">
+                        @c.Name
+                    </option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
+        <input type="date" name="from" value="@(ViewBag.From?.ToString("yyyy-MM-dd"))" class="form-control" />
+    </div>
+    <div class="col-md-2">
+        <input type="date" name="to" value="@(ViewBag.To?.ToString("yyyy-MM-dd"))" class="form-control" />
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-primary w-100">
+            <i class="bi bi-funnel"></i> Filter
+        </button>
+    </div>
+</form>
+
+<!-- 🆕 Upload Button -->
+<p class="d-flex justify-content-between align-items-center mb-3">
+    <a class="btn btn-success shadow-sm" asp-action="Upload">
+        <i class="bi bi-upload"></i> Upload Document
+    </a>
+</p>
+
+<!-- 📄 Documents Table -->
+<table class="table table-hover table-striped align-middle shadow-sm rounded">
+    <thead class="table-dark">
+        <tr>
+            <th>File Name</th>
+            <th>Uploaded</th>
+            <th>Category</th>
+            <th class="text-center" style="width: 200px;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var d in Model)
+            {
+                <tr>
+                    <td>@d.FileName</td>
+                    <td>@d.UploadDate.ToLocalTime().ToString("g")</td>
+
+                    <!-- 🧠 Category Display -->
+                    <td>
+                        @if (d.Category != null)
+                        {
+                            <span class="badge bg-info text-dark">
+                                @d.Category.Name
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Uncategorized</span>
+                        }
+                    </td>
+
+                    <!-- ⚙️ Actions -->
+                    <td class="text-center">
+                        <div class="d-flex justify-content-center gap-2">
+                            <a asp-action="Details" asp-route-id="@d.Id"
+                               class="btn btn-sm btn-primary">
+                                <i class="bi bi-eye"></i> Details
+                            </a>
+
+                            <form asp-action="Delete" asp-route-id="@d.Id" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Are you sure you want to delete this document?');">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4" class="text-center text-muted py-4">
+                    No documents found. Try uploading one!
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

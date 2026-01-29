@@ -1,0 +1,90 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2 class="mb-4 text-primary fw-bold">📊 SmartDoc OCR Dashboard</h2>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="text-secondary">Uploads by Month</h5>
+                <canvas id="uploadsChart" height="150"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="text-secondary">Top Categories</h5>
+                <canvas id="catsChart" height="150"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    async function draw() {
+        // === Uploads by Month (stacked bars)
+        const uResp = await fetch('@Url.Action("UploadsByMonth")');
+        const uData = await uResp.json();
+
+        new Chart(document.getElementById('uploadsChart'), {
+            type: 'bar',
+            data: {
+                labels: uData.labels,
+                datasets: [
+                    {
+                        label: 'Recognized',
+                        data: uData.recognized,
+                        backgroundColor: '#4e73df'
+                    },
+                    {
+                        label: 'Unrecognized',
+                        data: uData.unrecognized,
+                        backgroundColor: '#e74a3b'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    title: { display: true, text: 'Uploads Trend by Category Type' }
+                },
+                scales: {
+                    x: { stacked: true },
+                    y: { stacked: true, beginAtZero: true }
+                }
+            }
+        });
+
+        // === Top Categories (pie)
+        const cResp = await fetch('@Url.Action("TopCategories")');
+        const cData = await cResp.json();
+
+        new Chart(document.getElementById('catsChart'), {
+            type: 'pie',
+            data: {
+                labels: cData.map(x => x.label),
+                datasets: [{
+                    label: 'Documents',
+                    data: cData.map(x => x.count),
+                    backgroundColor: cData.map(x =>
+                        x.label === 'Unrecognized' ? '#d3d3d3' :
+                        ['#3e95cd', '#8e5ea2', '#3cba9f', '#f6c23e', '#1cc88a'][Math.floor(Math.random() * 5)]
+                    )
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: { position: 'bottom' },
+                    title: { display: true, text: 'Top 5 Categories' }
+                }
+            }
+        });
+    }
+
+    draw();
+</script>

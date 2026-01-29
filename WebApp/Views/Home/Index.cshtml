@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Welcome to SmartDoc OCR";
+}
+
+<div class="text-center mt-5">
+    <h1 class="display-4 fw-bold text-primary">SmartDoc OCR</h1>
+    <p class="lead mb-4">Digitize, organize, and categorize your documents intelligently.</p>
+
+    <div class="d-flex justify-content-center gap-3 mb-5">
+        <a asp-controller="Documents" asp-action="Upload" class="btn btn-lg btn-primary shadow-sm">
+            📤 Upload Document
+        </a>
+        <a asp-controller="Documents" asp-action="Index" class="btn btn-lg btn-outline-primary shadow-sm">
+            📂 View My Documents
+        </a>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">🔍 Optical Character Recognition</h5>
+                        <p class="card-text">Our app extracts text from your scanned documents using Tesseract OCR, converting them into searchable and editable text instantly.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-success">🧠 Smart Categorization</h5>
+                        <p class="card-text">SmartDoc OCR automatically detects and classifies your files — invoices, receipts, IDs, letters, and more — using intelligent keyword matching.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-warning">📊 Organized Dashboard</h5>
+                        <p class="card-text">Easily view and filter uploaded files by category, keyword, or date — all in one simple and user-friendly interface.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

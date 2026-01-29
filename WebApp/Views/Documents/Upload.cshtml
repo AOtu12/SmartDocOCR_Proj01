@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Upload Document";
+}
+
+<div class="container mt-5">
+    <div class="card shadow border-0">
+        <div class="card-header bg-primary text-white">
+            <h4><i class="bi bi-upload"></i> Upload New Document</h4>
+        </div>
+
+        <div class="card-body bg-light">
+            <form asp-action="Upload" asp-controller="Documents" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Choose File</label>
+                    <input type="file" name="file" class="form-control" required />
+                </div>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-success me-2">
+                        <i class="bi bi-upload"></i> Upload
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
